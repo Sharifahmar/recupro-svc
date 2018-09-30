@@ -64,7 +64,8 @@ public class Requirements extends AuditModel {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Accounts accounts;
-    @ManyToMany(mappedBy="requirements")
+   // @JsonManagedReference
+    @ManyToMany(mappedBy="requirements",fetch = FetchType.EAGER)
     @JsonIgnoreProperties("requirements")
     private List<Candidate> candidates ;
 	public Long getId() {

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -73,8 +75,8 @@ public class Candidate extends AuditModel {
 	private String secondaryskills;
 	@Column(columnDefinition = "text")
 	private String docsuploaded;
-
-	@ManyToMany(cascade = { CascadeType.ALL })
+	 @JsonBackReference
+	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
 	@JoinTable(name = "Candidate_Requirement", joinColumns = { @JoinColumn(name = "candidate_id") }, inverseJoinColumns = { @JoinColumn(name = "req_id") })
 	@JsonIgnoreProperties("candidates")
 	private List<Requirements> requirements = new ArrayList<Requirements>();

@@ -43,7 +43,7 @@ public class Accounts extends AuditModel {
     private String team;
     // added JsonMangedReference to add the client and requirement association via Spring data rest call
     // ref : https://stackoverflow.com/questions/29876978/spring-data-rest-one-to-many-cascade-all
-    @JsonManagedReference
+//    @JsonManagedReference
     @OneToMany(cascade = {CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="accounts")
     @JsonIgnoreProperties("accounts")
     private List<Requirements> requirements;

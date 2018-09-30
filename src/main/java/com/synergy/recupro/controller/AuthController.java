@@ -4,14 +4,11 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.Objects;
 
-import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -58,8 +55,6 @@ public class AuthController {
     @Autowired
     MailHelper mailHelper;
     
-    
-    
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -73,6 +68,16 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = tokenProvider.generateToken(authentication);
+                
+        try 
+        {
+   			mailHelper.sendLoggedInEmailInfo(loginRequest.getUsernameOrEmail());
+        }
+        catch(Exception ex) 
+        {
+       	 System.err.println("email exception"+ex);
+       	 //TODO: Have to log error going forward
+        }
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
@@ -120,5 +125,5 @@ public class AuthController {
         
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
-    
+        
 }
