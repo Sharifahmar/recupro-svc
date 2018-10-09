@@ -59,27 +59,27 @@ public class Aws3ServiceImpl implements IAws3Service {
 		return putObjectResult;
 	}
 
-	public List<PutObjectResult> upload(MultipartFile[] multipartFiles, Long id) {
-		List<PutObjectResult> putObjectResults = new ArrayList<>();
+	public List<Document> upload(MultipartFile[] multipartFiles, Long id) {
+		List<Document> documents = new ArrayList<>();
 		Arrays.stream(multipartFiles)
 				.filter(multipartFile -> !StringUtils.isEmpty(multipartFile
 						.getOriginalFilename()))
 				.forEach(
 						multipartFile -> {
 							try {
-								putObjectResults.add(
+								
 								upload(multipartFile.getInputStream(),
-										multipartFile.getOriginalFilename(), id)
-								);
+										multipartFile.getOriginalFilename(), id);
+								
 
-								saveMetaData(multipartFile, id);
+								documents.add(saveMetaData(multipartFile, id));
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						}
 				);
 
-		return putObjectResults;
+		return documents;
 	}
 
 	public List<S3ObjectSummary> list() {
@@ -94,7 +94,7 @@ public class Aws3ServiceImpl implements IAws3Service {
 	/**
 	 * Method is use to save metadata of multipart
 	 */
-	public void saveMetaData(MultipartFile file, Long id) throws IOException {
+	public Document saveMetaData(MultipartFile file, Long id) throws IOException {
 		Document metaData = new Document();
 		if (id != null) {
 			Candidate candidate = candidateRepository.findByCandidateId(id);
@@ -102,7 +102,7 @@ public class Aws3ServiceImpl implements IAws3Service {
 			metaData.setDocumentName(file.getOriginalFilename());
 			metaData.setDocumentType(file.getContentType());
 			metaData.setDocumentSize(file.getSize());
-			documentRepository.save(metaData);
+			return documentRepository.save(metaData);
 		} else {
 			throw new AppException("Candidate Id not Found");
 		}

@@ -4,6 +4,7 @@
 package com.synergy.recupro.controller;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -62,19 +63,20 @@ public class DocumentController {
 	String message = "";
 
 	@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
-	@PostMapping(value = "/upload")
-	public ResponseEntity<String> upload(
+	@PostMapping(value = "/upload" )
+	public ResponseEntity<List<Document>> upload(
 			@RequestPart("file") MultipartFile[] multipartFiles,
 			@RequestParam("id") Long id) {
+		List<Document> documents = new ArrayList<>();
 		try {
-			aws3ServiceImpl.upload(multipartFiles, id);
+			documents=aws3ServiceImpl.upload(multipartFiles, id);
 		} catch (Exception e) {
 			
 			throw new AppException("Error while uploading file");
 
 		}
 		message = "File successfully uploaded !";
-		return new ResponseEntity<String>(message, HttpStatus.OK);
+		return new ResponseEntity<List<Document>>(documents, HttpStatus.OK);
 
 	}
 

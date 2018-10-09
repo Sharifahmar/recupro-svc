@@ -1,14 +1,19 @@
 package com.synergy.recupro.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /** An entity that stores file meta data into database */
 @Entity
@@ -20,11 +25,14 @@ public class Document {
 	@SequenceGenerator(name = "documents_generator", sequenceName = "documents_sequence", initialValue = 1000)
 	
 	private Long id;
+	@JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "candidateid")
+	@JoinColumn(name = "candidateid", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+    //@JsonIgnore
 	private Candidate candidate;
-
+	
 	@Column(name = "documentname")
 	private String documentName;
 

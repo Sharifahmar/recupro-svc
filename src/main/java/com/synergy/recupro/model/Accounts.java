@@ -11,10 +11,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
+@ConditionalOnProperty(name="recupro.security.switch", matchIfMissing = true, havingValue ="on")
 @Entity
 @Table(name = "accounts")
 public class Accounts extends AuditModel {
