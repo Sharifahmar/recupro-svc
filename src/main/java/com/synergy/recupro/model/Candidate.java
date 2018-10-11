@@ -25,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "candidate")
 public class Candidate extends AuditModel {
 
+	
 	/**
 	 * 
 	 */

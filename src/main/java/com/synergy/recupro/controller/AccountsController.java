@@ -26,6 +26,7 @@ public class AccountsController {
 	
 	public static final Logger logger = LogManager.getLogger(AccountsController.class);
 
+	
     @Autowired
     private AccountsRepository AccountsRepository;
 

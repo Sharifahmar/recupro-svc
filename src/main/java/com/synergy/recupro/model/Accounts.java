@@ -29,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name="accounts")
 public class Accounts extends AuditModel {
 	
+	
     /**
 	 * 
 	 */

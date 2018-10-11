@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Table(name = "requirements")
 public class Requirements extends AuditModel {
 	 
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "req_generator")    
 	@TableGenerator(
