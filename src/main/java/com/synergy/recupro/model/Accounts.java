@@ -6,48 +6,133 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
+import javax.persistence.JoinColumn;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-@ConditionalOnProperty(name="recupro.security.switch", matchIfMissing = true, havingValue ="on")
+
 @Entity
-@Table(name = "accounts")
+@Table(name="accounts")
 public class Accounts extends AuditModel {
 	
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@Id
-    @GeneratedValue(generator = "accounts_generator")
-    @SequenceGenerator(
-            name = "accounts_generator",
-            sequenceName = "accounts_sequence",
-            initialValue = 1000
-    )
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "accounts_generator")    
+	@TableGenerator(
+	  name = "accounts_generator",
+	  table = "id_gen",
+	  pkColumnName = "gen_name",
+	  valueColumnName = "gen_val",
+	  initialValue = 1000,
+	  allocationSize = 10)
+      private Long id;
+   
+	
+	
+	//Client Information
     @Column(columnDefinition = "text")
+    @Size(min = 3, max = 25)
     private String name;
+
     @Column(columnDefinition = "text")
-    private String type;
+    @Size(min = 3, max = 15)
+    private String access;
+    
     @Column(columnDefinition = "text")
-    private String address;
+    @Size(min = 3, max = 35)
+    private String accountOwner;
+    
     @Column(columnDefinition = "text")
-    private String phone;
+    @Size(max = 25)
+    private String category;
+    
     @Column(columnDefinition = "text")
-    private String team;
-    // added JsonMangedReference to add the client and requirement association via Spring data rest call
-    // ref : https://stackoverflow.com/questions/29876978/spring-data-rest-one-to-many-cascade-all
-//    @JsonManagedReference
-    @OneToMany(cascade = {CascadeType.ALL,CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="accounts")
-    @JsonIgnoreProperties("accounts")
+    @Size(max=25)
+    private String websiteAddress;
+    
+    @Column(columnDefinition = "text")
+    @Size(max=25)
+    private String status; 
+    
+    @Column(columnDefinition = "text")
+    @Size(max=25)
+    private String accountCode; 
+    
+    
+    //Address Information
+    @Column(columnDefinition = "text")
+    @Size(max=10)
+    private String phoneNumber1;
+    
+    @Column(columnDefinition = "text")
+    @Size(max=10)
+    private String phoneNumber2;
+    
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String country;
+    
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String state;
+    
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String city;
+   
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String street;
+    
+    @Column(columnDefinition = "int")
+    private int zipCode;
+    
+    @Column(columnDefinition = "int")
+    private int fax;
+    
+    @Email
+    @Column(columnDefinition = "text")
+    private String email1;
+
+    @Email
+    @Column(columnDefinition = "text")
+    private String email2;
+    
+    @Column(columnDefinition = "text")
+    @Size(min = 10, max = 1000)
+    private String description;
+    
+    @JoinTable(name = "accounts_requirements",
+        joinColumns = @JoinColumn(
+                name = "accounts_id",
+                referencedColumnName = "id"
+        ),
+        inverseJoinColumns = @JoinColumn(
+                name = "requirements_id",
+                referencedColumnName = "id"
+        ))
+    @NotFound(
+            action = NotFoundAction.IGNORE)
+    @OneToMany
+    @JsonIgnore
     private List<Requirements> requirements;
 
 	public Long getId() {
@@ -66,36 +151,140 @@ public class Accounts extends AuditModel {
 		this.name = name;
 	}
 
-	public String getType() {
-		return type;
+	public String getAccess() {
+		return access;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setAccess(String access) {
+		this.access = access;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getAccountOwner() {
+		return accountOwner;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAccountOwner(String accountOwner) {
+		this.accountOwner = accountOwner;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getCategory() {
+		return category;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
-	public String getTeam() {
-		return team;
+	public String getWebsiteAddress() {
+		return websiteAddress;
 	}
 
-	public void setTeam(String team) {
-		this.team = team;
+	public void setWebsiteAddress(String websiteAddress) {
+		this.websiteAddress = websiteAddress;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getAccountCode() {
+		return accountCode;
+	}
+
+	public void setAccountCode(String accountCode) {
+		this.accountCode = accountCode;
+	}
+
+	public String getPhoneNumber1() {
+		return phoneNumber1;
+	}
+
+	public void setPhoneNumber1(String phoneNumber1) {
+		this.phoneNumber1 = phoneNumber1;
+	}
+
+	public String getPhoneNumber2() {
+		return phoneNumber2;
+	}
+
+	public void setPhoneNumber2(String phoneNumber2) {
+		this.phoneNumber2 = phoneNumber2;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public int getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(int zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public int getFax() {
+		return fax;
+	}
+
+	public void setFax(int fax) {
+		this.fax = fax;
+	}
+
+	public String getEmail1() {
+		return email1;
+	}
+
+	public void setEmail1(String email1) {
+		this.email1 = email1;
+	}
+
+	public String getEmail2() {
+		return email2;
+	}
+
+	public void setEmail2(String email2) {
+		this.email2 = email2;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public List<Requirements> getRequirements() {
@@ -105,5 +294,4 @@ public class Accounts extends AuditModel {
 	public void setRequirements(List<Requirements> requirements) {
 		this.requirements = requirements;
 	}
-	
 }

@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -14,8 +15,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "candidate")
@@ -25,58 +29,125 @@ public class Candidate extends AuditModel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	@Id
-	@GeneratedValue(generator = "candidates_generator")
-	@SequenceGenerator(name = "candidates_generator", sequenceName = "candidates_sequence", initialValue = 1000)
-	@Column(name = "candidateid")
-	private Long candidateId;
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "candidates_generator")    
+	@TableGenerator(
+	  name = "candidates_generator",
+	  table = "id_gen",
+	  pkColumnName = "gen_name",
+	  valueColumnName = "gen_val",
+	  initialValue = 1000,
+	  allocationSize = 10)
+      private Long candidateId;
+   
 	@Column(columnDefinition = "text")
-	private String firstname;
-	@Column(columnDefinition = "text")
-	private String lastname;
-	@Column(columnDefinition = "text")
-	private String phonenumber;
-	@Column(columnDefinition = "text")
-	private String emailaddress;
-	@Column(columnDefinition = "text")
-	private String overallexperience;
-	@Column(columnDefinition = "text")
-	private String relevantexperience;
-	@Column(columnDefinition = "text")
-	private String workingstatus;
-	@Column(columnDefinition = "text")
-	private String strengths;
-	@Column(columnDefinition = "text")
-	private String avaiabilityforinterview;
-	@Column(columnDefinition = "text")
-	private String availabilitytojoin;
-	@Column(columnDefinition = "text")
-	private String status;
-	@Column(columnDefinition = "text")
-	private String reason;
-	@Column(columnDefinition = "text")
-	private String linkedinurl;
-	@Column(columnDefinition = "text")
-	private String referrences;
-	@Column(columnDefinition = "text")
-	private String vendorname;
-	@Column(columnDefinition = "text")
-	private String vendorcontact;
-	@Column(columnDefinition = "text")
-	private String vendorphone;
-	@Column(columnDefinition = "text")
-	private String vendoremail;
-	@Column(columnDefinition = "text")
-	private String referredby;
-	@Column(columnDefinition = "text")
-	private String primaryskills;
-	@Column(columnDefinition = "text")
-	private String secondaryskills;
-	@Column(columnDefinition = "text")
-	private String docsuploaded;
+	private String firstName;
 
+	@Column(columnDefinition = "text")
+	private String middleName;
+	
+	@Column(columnDefinition = "text")
+	private String lastName;
+	
+	@Column(columnDefinition = "text")
+	private String emailAddress;
+	
+	@Column(columnDefinition = "text")
+	private String mobileNumber;
+
+	@Column(columnDefinition = "text")
+	private String phoneNumber;
+	
+	@Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String country;
+    
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String state;
+    
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String city;
+   
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String address;
+    
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String preferredLocation1;
+    
+    @Column(columnDefinition = "text")
+    @Size(max = 75)
+    private String preferredLocation2;
+    
+    @Column(columnDefinition = "int")
+    private int zipCode;
+    
+    @Column(columnDefinition = "int")
+    private int skypeId;
+    
+	@Column(columnDefinition = "text")
+	private String linkedinUrl;
+	
+	@Column(columnDefinition = "text")
+	private String sourceFrom;
+	
+	@Column(columnDefinition = "text")
+	private String sourceInfo;
+
+	@Column(columnDefinition = "text")
+	private String sourcing;
+
+	@Column(columnDefinition = "text")
+	private String sourceBy;
+	
+	@Column(columnDefinition = "text")
+	private String availableFrom;
+	
+	@Column(columnDefinition = "text")
+	private String noticePeriod;
+
+    @Column(columnDefinition = "int" )
+    private int fax;	   
+
+    @Column(columnDefinition = "text" )
+    private int licenseNumber;
+	
+    @Column(columnDefinition = "text")
+    private int passportNumber;
+    
+    @Column(columnDefinition = "text" )
+    private int visaStatus;
+    
+    @Column(columnDefinition = "text" )
+    private int dateOfBirth;
+    
+    @Column(columnDefinition = "text" )
+    private int candidateStatus;
+    
+    @Column(columnDefinition = "text")
+    private int gender;
+    
+    @Column(columnDefinition = "text")
+    private int fatherName;
+    
+    @Column(columnDefinition = "text" )
+    private int motherName;
+    
+    @Column(columnDefinition = "text" )
+    private int nationality;
+    
+    @Column(columnDefinition = "text" )
+    private int hobbies;
+    
+    @Column(columnDefinition = "text" )
+    private int maritalStatus;
+ 
 	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "Candidate_Requirement", joinColumns = { @JoinColumn(name = "candidate_id") }, inverseJoinColumns = { @JoinColumn(name = "req_id") })
+	@JoinTable
 	@JsonIgnoreProperties("candidates")
 	private List<Requirements> requirements = new ArrayList<Requirements>();
 
@@ -87,7 +158,6 @@ public class Candidate extends AuditModel {
     private List<Document> document;
 
 	
-
 	public Long getCandidateId() {
 		return candidateId;
 	}
@@ -96,182 +166,268 @@ public class Candidate extends AuditModel {
 		this.candidateId = candidateId;
 	}
 
-
-
-	public String getFirstname() {
-		return firstname;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getLastname() {
-		return lastname;
+	public String getMiddleName() {
+		return middleName;
 	}
 
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
-	public String getPhonenumber() {
-		return phonenumber;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setPhonenumber(String phonenumber) {
-		this.phonenumber = phonenumber;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public String getEmailaddress() {
-		return emailaddress;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	public void setEmailaddress(String emailaddress) {
-		this.emailaddress = emailaddress;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
-	public String getOverallexperience() {
-		return overallexperience;
+	public String getMobileNumber() {
+		return mobileNumber;
 	}
 
-	public void setOverallexperience(String overallexperience) {
-		this.overallexperience = overallexperience;
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
 	}
 
-	public String getRelevantexperience() {
-		return relevantexperience;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setRelevantexperience(String relevantexperience) {
-		this.relevantexperience = relevantexperience;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 
-	public String getWorkingstatus() {
-		return workingstatus;
+	public String getCountry() {
+		return country;
 	}
 
-	public void setWorkingstatus(String workingstatus) {
-		this.workingstatus = workingstatus;
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
-	public String getStrengths() {
-		return strengths;
+	public String getState() {
+		return state;
 	}
 
-	public void setStrengths(String strengths) {
-		this.strengths = strengths;
+	public void setState(String state) {
+		this.state = state;
 	}
 
-	public String getAvaiabilityforinterview() {
-		return avaiabilityforinterview;
+	public String getCity() {
+		return city;
 	}
 
-	public void setAvaiabilityforinterview(String avaiabilityforinterview) {
-		this.avaiabilityforinterview = avaiabilityforinterview;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
-	public String getAvailabilitytojoin() {
-		return availabilitytojoin;
+	public String getAddress() {
+		return address;
 	}
 
-	public void setAvailabilitytojoin(String availabilitytojoin) {
-		this.availabilitytojoin = availabilitytojoin;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
-	public String getStatus() {
-		return status;
+	public String getPreferredLocation1() {
+		return preferredLocation1;
 	}
 
-	public void setStatus(String status) {
-		this.status = status;
+	public void setPreferredLocation1(String preferredLocation1) {
+		this.preferredLocation1 = preferredLocation1;
 	}
 
-	public String getReason() {
-		return reason;
+	public String getPreferredLocation2() {
+		return preferredLocation2;
 	}
 
-	public void setReason(String reason) {
-		this.reason = reason;
+	public void setPreferredLocation2(String preferredLocation2) {
+		this.preferredLocation2 = preferredLocation2;
 	}
 
-	public String getLinkedinurl() {
-		return linkedinurl;
+	public int getZipCode() {
+		return zipCode;
 	}
 
-	public void setLinkedinurl(String linkedinurl) {
-		this.linkedinurl = linkedinurl;
+	public void setZipCode(int zipCode) {
+		this.zipCode = zipCode;
 	}
 
-	public String getReferrences() {
-		return referrences;
+	public int getSkypeId() {
+		return skypeId;
 	}
 
-	public void setReferrences(String referrences) {
-		this.referrences = referrences;
+	public void setSkypeId(int skypeId) {
+		this.skypeId = skypeId;
 	}
 
-	public String getVendorname() {
-		return vendorname;
+	public String getLinkedinUrl() {
+		return linkedinUrl;
 	}
 
-	public void setVendorname(String vendorname) {
-		this.vendorname = vendorname;
+	public void setLinkedinUrl(String linkedinUrl) {
+		this.linkedinUrl = linkedinUrl;
 	}
 
-	public String getVendorcontact() {
-		return vendorcontact;
+	public String getSourceFrom() {
+		return sourceFrom;
 	}
 
-	public void setVendorcontact(String vendorcontact) {
-		this.vendorcontact = vendorcontact;
+	public void setSourceFrom(String sourceFrom) {
+		this.sourceFrom = sourceFrom;
 	}
 
-	public String getVendorphone() {
-		return vendorphone;
+	public String getSourceInfo() {
+		return sourceInfo;
 	}
 
-	public void setVendorphone(String vendorphone) {
-		this.vendorphone = vendorphone;
+	public void setSourceInfo(String sourceInfo) {
+		this.sourceInfo = sourceInfo;
 	}
 
-	public String getVendoremail() {
-		return vendoremail;
+	public String getSourcing() {
+		return sourcing;
 	}
 
-	public void setVendoremail(String vendoremail) {
-		this.vendoremail = vendoremail;
+	public void setSourcing(String sourcing) {
+		this.sourcing = sourcing;
 	}
 
-	public String getReferredby() {
-		return referredby;
+	public String getSourceBy() {
+		return sourceBy;
 	}
 
-	public void setReferredby(String referredby) {
-		this.referredby = referredby;
+	public void setSourceBy(String sourceBy) {
+		this.sourceBy = sourceBy;
 	}
 
-	public String getPrimaryskills() {
-		return primaryskills;
+	public String getAvailableFrom() {
+		return availableFrom;
 	}
 
-	public void setPrimaryskills(String primaryskills) {
-		this.primaryskills = primaryskills;
+	public void setAvailableFrom(String availableFrom) {
+		this.availableFrom = availableFrom;
 	}
 
-	public String getSecondaryskills() {
-		return secondaryskills;
+	public String getNoticePeriod() {
+		return noticePeriod;
 	}
 
-	public void setSecondaryskills(String secondaryskills) {
-		this.secondaryskills = secondaryskills;
+	public void setNoticePeriod(String noticePeriod) {
+		this.noticePeriod = noticePeriod;
 	}
 
-	public String getDocsuploaded() {
-		return docsuploaded;
+	public int getFax() {
+		return fax;
 	}
 
-	public void setDocsuploaded(String docsuploaded) {
-		this.docsuploaded = docsuploaded;
+	public void setFax(int fax) {
+		this.fax = fax;
+	}
+
+	public int getLicenseNumber() {
+		return licenseNumber;
+	}
+
+	public void setLicenseNumber(int licenseNumber) {
+		this.licenseNumber = licenseNumber;
+	}
+
+	public int getPassportNumber() {
+		return passportNumber;
+	}
+
+	public void setPassportNumber(int passportNumber) {
+		this.passportNumber = passportNumber;
+	}
+
+	public int getVisaStatus() {
+		return visaStatus;
+	}
+
+	public void setVisaStatus(int visaStatus) {
+		this.visaStatus = visaStatus;
+	}
+
+	public int getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(int dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public int getCandidateStatus() {
+		return candidateStatus;
+	}
+
+	public void setCandidateStatus(int candidateStatus) {
+		this.candidateStatus = candidateStatus;
+	}
+
+	public int getGender() {
+		return gender;
+	}
+
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
+
+	public int getFatherName() {
+		return fatherName;
+	}
+
+	public void setFatherName(int fatherName) {
+		this.fatherName = fatherName;
+	}
+
+	public int getMotherName() {
+		return motherName;
+	}
+
+	public void setMotherName(int motherName) {
+		this.motherName = motherName;
+	}
+
+	public int getNationality() {
+		return nationality;
+	}
+
+	public void setNationality(int nationality) {
+		this.nationality = nationality;
+	}
+
+	public int getHobbies() {
+		return hobbies;
+	}
+
+	public void setHobbies(int hobbies) {
+		this.hobbies = hobbies;
+	}
+
+	public int getMaritalStatus() {
+		return maritalStatus;
+	}
+
+	public void setMaritalStatus(int maritalStatus) {
+		this.maritalStatus = maritalStatus;
 	}
 
 	public List<Requirements> getRequirements() {
@@ -281,35 +437,4 @@ public class Candidate extends AuditModel {
 	public void setRequirements(List<Requirements> requirements) {
 		this.requirements = requirements;
 	}
-
-	
-	public List<Document> getDocument() {
-		return document;
-	}
-
-	public void setDocument(List<Document> document) {
-		this.document = document;
-	}
-
-	@Override
-	public String toString() {
-		return "Candidate [candidateid=" + candidateId + ", firstname="
-				+ firstname + ", lastname=" + lastname + ", phonenumber="
-				+ phonenumber + ", emailaddress=" + emailaddress
-				+ ", overallexperience=" + overallexperience
-				+ ", relevantexperience=" + relevantexperience
-				+ ", workingstatus=" + workingstatus + ", strengths="
-				+ strengths + ", avaiabilityforinterview="
-				+ avaiabilityforinterview + ", availabilitytojoin="
-				+ availabilitytojoin + ", status=" + status + ", reason="
-				+ reason + ", linkedinurl=" + linkedinurl + ", referrences="
-				+ referrences + ", vendorname=" + vendorname
-				+ ", vendorcontact=" + vendorcontact + ", vendorphone="
-				+ vendorphone + ", vendoremail=" + vendoremail
-				+ ", referredby=" + referredby + ", primaryskills="
-				+ primaryskills + ", secondaryskills=" + secondaryskills
-				+ ", docsuploaded=" + docsuploaded + ", requirements="
-				+ requirements + "]";
-	}
-
 }
