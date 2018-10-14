@@ -133,7 +133,7 @@ public class Accounts extends AuditModel {
 //    @OneToMany
 //    @JsonIgnore
 //    private List<Requirements> requirements;
-//    @JsonManagedReference
+  @JsonManagedReference(value="accounts-requirements")
     @JoinTable(name = "accounts_requirements", 
     		joinColumns={@JoinColumn(name="accounts_id", referencedColumnName="id")},
             inverseJoinColumns={@JoinColumn(name="requirements_id", referencedColumnName="id")})

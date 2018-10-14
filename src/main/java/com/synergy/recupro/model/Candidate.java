@@ -13,13 +13,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "candidate")
@@ -87,8 +85,8 @@ public class Candidate extends AuditModel {
     @Column(columnDefinition = "int")
     private int zipCode;
     
-    @Column(columnDefinition = "int")
-    private int skypeId;
+    @Column(columnDefinition = "text")
+    private String skypeId;
     
 	@Column(columnDefinition = "text")
 	private String linkedinUrl;
@@ -133,19 +131,19 @@ public class Candidate extends AuditModel {
     private int gender;
     
     @Column(columnDefinition = "text")
-    private int fatherName;
+    private String fatherName;
     
     @Column(columnDefinition = "text" )
-    private int motherName;
+    private String motherName;
     
     @Column(columnDefinition = "text" )
-    private int nationality;
+    private String nationality;
     
     @Column(columnDefinition = "text" )
-    private int hobbies;
+    private String hobbies;
     
     @Column(columnDefinition = "text" )
-    private int maritalStatus;
+    private String maritalStatus;
  
 //	@ManyToMany(cascade = { CascadeType.ALL })
 ////	@JoinTable
@@ -276,11 +274,13 @@ public class Candidate extends AuditModel {
 		this.zipCode = zipCode;
 	}
 
-	public int getSkypeId() {
+	
+
+	public String getSkypeId() {
 		return skypeId;
 	}
 
-	public void setSkypeId(int skypeId) {
+	public void setSkypeId(String skypeId) {
 		this.skypeId = skypeId;
 	}
 
@@ -396,43 +396,43 @@ public class Candidate extends AuditModel {
 		this.gender = gender;
 	}
 
-	public int getFatherName() {
+	public String getFatherName() {
 		return fatherName;
 	}
 
-	public void setFatherName(int fatherName) {
+	public void setFatherName(String fatherName) {
 		this.fatherName = fatherName;
 	}
 
-	public int getMotherName() {
+	public String getMotherName() {
 		return motherName;
 	}
 
-	public void setMotherName(int motherName) {
+	public void setMotherName(String motherName) {
 		this.motherName = motherName;
 	}
 
-	public int getNationality() {
+	public String getNationality() {
 		return nationality;
 	}
 
-	public void setNationality(int nationality) {
+	public void setNationality(String nationality) {
 		this.nationality = nationality;
 	}
 
-	public int getHobbies() {
+	public String getHobbies() {
 		return hobbies;
 	}
 
-	public void setHobbies(int hobbies) {
+	public void setHobbies(String hobbies) {
 		this.hobbies = hobbies;
 	}
 
-	public int getMaritalStatus() {
+	public String getMaritalStatus() {
 		return maritalStatus;
 	}
 
-	public void setMaritalStatus(int maritalStatus) {
+	public void setMaritalStatus(String maritalStatus) {
 		this.maritalStatus = maritalStatus;
 	}
 
