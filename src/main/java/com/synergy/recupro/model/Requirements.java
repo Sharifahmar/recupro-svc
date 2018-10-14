@@ -1,6 +1,7 @@
 package com.synergy.recupro.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
@@ -133,20 +135,36 @@ public class Requirements extends AuditModel {
     @Column(columnDefinition ="text" )
     private String notes;
      
-     //Added JsonBack reference to add the referemce of requirement to account repo via spring data rest api call
-    @JsonBackReference  
-    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-    @JoinColumn(name = "accounts_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @NotFound(
-            action = NotFoundAction.IGNORE)
-    @JsonIgnore
+//     //Added JsonBack reference to add the referemce of requirement to account repo via spring data rest api call
+//    @JsonBackReference  
+//    @ManyToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+//    @JoinColumn(name = "accounts_id")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @NotFound(
+//            action = NotFoundAction.IGNORE)
+//    @JsonIgnore
+//    private Accounts accounts;
+    @JsonBackReference (value="accounts-requirements")
+    @JoinTable(name = "accounts_requirements", 
+    		joinColumns={@JoinColumn(name="requirements_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="accounts_id", referencedColumnName="id")})
+    @ManyToOne(cascade = { CascadeType.ALL })
     private Accounts accounts;
- 
+
+
     
-    @ManyToMany(mappedBy="requirements")
+//    @ManyToMany(mappedBy="requirements")
+//    @JsonIgnoreProperties("requirements")
+//    private List<Candidate> candidates ;
+    @JsonBackReference
+    @JoinTable(name = "candidate_requirements", 
+    		joinColumns={@JoinColumn(name="requirements_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="candidates_candidate_id", referencedColumnName="candidateId")})
+    @ManyToMany
     @JsonIgnoreProperties("requirements")
-    private List<Candidate> candidates ;
+    private List<Candidate> candidates = new ArrayList<Candidate>();
+
+   
 
     public Long getRequirementId() {
 		return id;

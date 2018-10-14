@@ -147,10 +147,15 @@ public class Candidate extends AuditModel {
     @Column(columnDefinition = "text" )
     private int maritalStatus;
  
-	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable
-	@JsonIgnoreProperties("candidates")
-	private List<Requirements> requirements = new ArrayList<Requirements>();
+//	@ManyToMany(cascade = { CascadeType.ALL })
+////	@JoinTable
+//	@JsonIgnoreProperties("candidates")
+//	private List<Requirements> requirements = new ArrayList<Requirements>();
+    @JoinTable(name = "candidate_requirements", 
+    		joinColumns={@JoinColumn(name="candidates_candidate_id")},
+            inverseJoinColumns={@JoinColumn(name="requirements_id")})
+    @ManyToMany(cascade = { CascadeType.ALL })
+    private List<Requirements> requirements = new ArrayList<Requirements>() ;
 
 //	@JsonManagedReference
     //@JsonManagedReference

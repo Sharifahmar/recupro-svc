@@ -8,9 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.TableGenerator;
 import javax.validation.constraints.Email;
@@ -19,16 +19,14 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import javax.persistence.JoinColumn;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
 @Table(name="accounts")
 public class Accounts extends AuditModel {
-	
 	
     /**
 	 * 
@@ -121,20 +119,28 @@ public class Accounts extends AuditModel {
     @Size(min = 10, max = 1000)
     private String description;
     
-    @JoinTable(name = "accounts_requirements",
-        joinColumns = @JoinColumn(
-                name = "accounts_id",
-                referencedColumnName = "id"
-        ),
-        inverseJoinColumns = @JoinColumn(
-                name = "requirements_id",
-                referencedColumnName = "id"
-        ))
-    @NotFound(
-            action = NotFoundAction.IGNORE)
-    @OneToMany
-    @JsonIgnore
+//    @JoinTable(name = "accounts_requirements",
+//        joinColumns = @JoinColumn(
+//                name = "accounts_id",
+//                referencedColumnName = "id"
+//        ),
+//        inverseJoinColumns = @JoinColumn(
+//                name = "requirements_id",
+//                referencedColumnName = "id"
+//        ))
+//    @NotFound(
+//            action = NotFoundAction.IGNORE)
+//    @OneToMany
+//    @JsonIgnore
+//    private List<Requirements> requirements;
+//    @JsonManagedReference
+    @JoinTable(name = "accounts_requirements", 
+    		joinColumns={@JoinColumn(name="accounts_id", referencedColumnName="id")},
+            inverseJoinColumns={@JoinColumn(name="requirements_id", referencedColumnName="id")})
+    @OneToMany(cascade = { CascadeType.ALL })
+    @JsonIgnoreProperties("requirements")
     private List<Requirements> requirements;
+
 
 	public Long getId() {
 		return id;
