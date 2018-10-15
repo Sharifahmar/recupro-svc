@@ -42,10 +42,8 @@ public class Accounts extends AuditModel {
 	  valueColumnName = "gen_val",
 	  initialValue = 1000,
 	  allocationSize = 10)
-      private Long id;
+	private Long id;
    
-	
-	
 	//Client Information
     @Column(columnDefinition = "text")
     @Size(min = 3, max = 25)
@@ -119,21 +117,6 @@ public class Accounts extends AuditModel {
     @Size(min = 10, max = 1000)
     private String description;
     
-//    @JoinTable(name = "accounts_requirements",
-//        joinColumns = @JoinColumn(
-//                name = "accounts_id",
-//                referencedColumnName = "id"
-//        ),
-//        inverseJoinColumns = @JoinColumn(
-//                name = "requirements_id",
-//                referencedColumnName = "id"
-//        ))
-//    @NotFound(
-//            action = NotFoundAction.IGNORE)
-//    @OneToMany
-//    @JsonIgnore
-//    private List<Requirements> requirements;
-  @JsonManagedReference(value="accounts-requirements")
     @JoinTable(name = "accounts_requirements", 
     		joinColumns={@JoinColumn(name="accounts_id", referencedColumnName="id")},
             inverseJoinColumns={@JoinColumn(name="requirements_id", referencedColumnName="id")})
