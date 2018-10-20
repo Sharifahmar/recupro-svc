@@ -24,8 +24,29 @@ public abstract class AuditModel implements Serializable {
     @Column(name = "updated_at", nullable = false)
     @LastModifiedDate
     private Date updatedAt;
+    
+    
+    private String lastModifiedBY;
+    
+    private String createdBy;
 
-    public Date getCreatedAt() {
+    public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getLastModifiedBY() {
+		return lastModifiedBY;
+	}
+
+	public void setLastModifiedBY(String lastModifiedBY) {
+		this.lastModifiedBY = lastModifiedBY;
+	}
+
+	public Date getCreatedAt() {
         return createdAt;
     }
 
