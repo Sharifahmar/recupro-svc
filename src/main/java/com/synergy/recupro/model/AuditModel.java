@@ -42,7 +42,6 @@ public abstract class AuditModel implements Serializable {
 		return lastModifiedBY;
 	}
 
-	
 	public void setLastModifiedBY(String lastModifiedBY) {
 		this.lastModifiedBY = lastModifiedBY;
 	}
