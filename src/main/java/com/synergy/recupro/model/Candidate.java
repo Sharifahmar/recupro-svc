@@ -18,10 +18,11 @@ import javax.persistence.TableGenerator;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.synergy.recupro.model.audit.UserDateAudit;
 
 @Entity
 @Table(name = "candidate")
-public class Candidate extends AuditModel {
+public class Candidate extends UserDateAudit {
 
 	
 	/**

@@ -22,11 +22,12 @@ import org.hibernate.annotations.NotFoundAction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.synergy.recupro.model.audit.UserDateAudit;
 
 
 @Entity
 @Table(name="accounts")
-public class Accounts extends AuditModel {
+public class Accounts extends UserDateAudit {
 	
     /**
 	 * 

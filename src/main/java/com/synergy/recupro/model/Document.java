@@ -16,11 +16,12 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.synergy.recupro.model.audit.UserDateAudit;
 
 /** An entity that stores file meta data into database */
 @Entity
 @Table(name = "documents")
-public class Document {
+public class Document extends UserDateAudit {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.TABLE, generator = "documents_generator")    

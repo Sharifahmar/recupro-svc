@@ -27,10 +27,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.synergy.recupro.model.audit.UserDateAudit;
 
 @Entity
 @Table(name = "requirements")
-public class Requirements extends AuditModel {
+public class Requirements extends UserDateAudit {
 	 
 	
 	@Id
