@@ -162,7 +162,17 @@ public class Candidate extends UserDateAudit {
     @JsonIgnoreProperties("candidate")
     private List<Document> document;
 
-	
+	@Column(columnDefinition = "text")
+    private String acquiredSkills;
+    
+	public String getAcquiredSkills() {
+		return acquiredSkills;
+	}
+
+	public void setAcquiredSkills(String acquiredSkills) {
+		this.acquiredSkills = acquiredSkills;
+	}
+
 	public Long getCandidateId() {
 		return candidateId;
 	}
